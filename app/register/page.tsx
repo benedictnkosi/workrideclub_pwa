@@ -12,12 +12,15 @@ import { useRouter } from "next/navigation";
 import ProgressBar from "../components/ProgressBar/ProgressBar";
 import { PlaceAutocomplete } from "../profile/PlaceAutoComplete";
 import { APIProvider } from "@vis.gl/react-google-maps";
+import Image from "next/image";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
   setCommuter: React.Dispatch<React.SetStateAction<typeof commuterInterface>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>; // This is the new line
   setError: (message: string | null) => void;
+  setCodeSent: React.Dispatch<React.SetStateAction<boolean>>;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const addressInterface = {
@@ -53,6 +56,8 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeStep, setActiveStep] = useState<number>(0);
   const [commuter, setCommuter] = useState(commuterInterface);
+  const [codeSent, setCodeSent] = useState(false);
+  const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
 
   useEffect(() => {
     console.log("error", error);
@@ -88,6 +93,8 @@ const Login: React.FC = () => {
                 setCommuter={setCommuter}
                 setActiveStep={setActiveStep}
                 setError={setError}
+                setCodeSent={setCodeSent}
+                setCountdown={setCountdown}
               />
             )}
             {activeStep === 1 && (
@@ -96,10 +103,17 @@ const Login: React.FC = () => {
                 setCommuter={setCommuter}
                 setActiveStep={setActiveStep}
                 setError={setError}
+                setCodeSent={setCodeSent}
+                setCountdown={setCountdown}
               />
             )}
             {activeStep === 2 && (
-              <VerificationForm phoneNumber={commuter.phone} />
+              <VerificationForm
+                phoneNumber={commuter.phone}
+                codeSent={codeSent}
+                countdown={countdown}
+                setCountdown={setCountdown}
+              />
             )}
             <a href="/login" className="mt-5 block text-center">
               Go to login
@@ -318,7 +332,14 @@ const CommuteForm: React.FC<CommuterProps> = (props) => {
 };
 
 const PersonalForm: React.FC<CommuterProps> = (props) => {
-  const { commuter, setCommuter, setActiveStep, setError } = props;
+  const {
+    commuter,
+    setCommuter,
+    setActiveStep,
+    setError,
+    setCodeSent,
+    setCountdown,
+  } = props;
   const [loading, setLoading] = useState(false);
 
   const handleNext = async () => {
@@ -341,6 +362,8 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
       if (response.data.code !== "R00") {
         setError(response.data.message as string);
       } else {
+        setCodeSent(true);
+        setCountdown(300); // Reset countdown to 5 minutes
         setActiveStep(2);
       }
     } catch (error) {
@@ -413,15 +436,38 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
 
 interface VerificationFormProps {
   phoneNumber: string;
+  codeSent: boolean;
+  countdown: number;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
+const VerificationForm: React.FC<VerificationFormProps> = ({
+  phoneNumber,
+  codeSent,
+  countdown,
+  setCountdown,
+}) => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (codeSent && countdown > 0) {
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [codeSent, countdown]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   const handleVerifyCode = async () => {
     try {
@@ -445,6 +491,11 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
       if (response.data.code !== "R00") {
         setError(response.data.message as string);
       } else {
+        localStorage.setItem("user_guid", response.data.guid);
+        localStorage.setItem(
+          "profile_complete",
+          response.data.profile_complete.toString()
+        );
         setShowSuccess(true);
       }
     } catch (error) {
@@ -456,8 +507,8 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
     }
   };
 
-  const navigateToLogin = () => {
-    router.push("/login");
+  const navigateToMatches = () => {
+    router.push("/");
   };
 
   return (
@@ -490,14 +541,20 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
               <Button
                 color="light"
                 pill
-                onClick={() => navigateToLogin()}
+                onClick={() => navigateToMatches()}
                 className="login-button"
               >
                 Go to the home page
               </Button>
             </div>
           ) : (
-            <form>
+            <form className="flex flex-col items-center">
+              <Image
+                src="/images/verify.png"
+                alt="logo"
+                width={200}
+                height={200}
+              />
               <Label htmlFor="code" value="Whatsapp Code" className="mt-5" />
               <TextInput
                 id="code"
@@ -507,6 +564,14 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
                 onChange={(e) => setCode(e.target.value)}
                 className="mt-5"
               />
+              <p className="text-center mt-5">{formatTime(countdown)}</p>
+              <p className="mt-2 text-center">
+                Didn’t receive the code?
+                <a href="/login" className="pink-text">
+                  {" "}
+                  Resend
+                </a>
+              </p>
               <Button
                 gradientDuoTone="pinkToOrange"
                 className="mt-5"

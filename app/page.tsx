@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Alert, Button, Spinner } from "flowbite-react";
 import axios from "axios";
@@ -80,6 +81,8 @@ export default function Home() {
 
       if (response.data.code !== "R00") {
         setError(response.data.message);
+        setLoading(false);
+        setMatchesFetched(true);
       } else {
         const matchesData = JSON.parse(response.data.matches);
         let filteredMatches;
@@ -145,7 +148,7 @@ export default function Home() {
   return (
     <div className="block">
       <NavMenu />
-      <div className="containerr">
+      <div className="container-content">
         {error && (
           <Alert
             className="mt-5 w-full"
@@ -159,8 +162,8 @@ export default function Home() {
         {loading ? (
           <Spinner aria-label="Extra large spinner example" size="xl" />
         ) : (
-          <>
-            <h2 className="title-18 m-5">Matches</h2>
+          <div className="flex flex-col items-center mt-5">
+            <h2 className="title-24 m-5">Matches</h2>
             {localStorage.getItem("profile_complete") === "false" ? (
               <>
                 <p>Complete your profile to find a lift club</p>
@@ -183,14 +186,17 @@ export default function Home() {
                   ) : (
                     <>
                       {matchesFetched ? (
-                        <div>
-                          <p className="mt-5 text-center">
+                        <div className="flex flex-col items-center mt-5">
+                          <p className="text-center">
                             No matches found, we will send you a WhatsApp
                             message when we find a match for you.
                           </p>
-                          <img
+                          <Image
                             src="/images/undraw_void_-3-ggu.svg"
                             alt="No matches found illustration"
+                            width={300}
+                            height={300}
+                            className="mt-10"
                           />
                         </div>
                       ) : (
@@ -201,7 +207,7 @@ export default function Home() {
                 </div>
               </>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

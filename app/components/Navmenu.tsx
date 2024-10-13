@@ -25,7 +25,7 @@ export function NavMenu() {
         <a href="/">
           <CiHome className="title-24 ml-5" />
         </a>
-        <CiLogout onClick={logout} className="title-24 ml-5" />
+        <CiLogout role="button" onClick={logout} className="title-24 ml-5" />
       </div>
     </div>
   );
