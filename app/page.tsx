@@ -8,6 +8,7 @@ import { MatchCard } from "./components/MatchCard";
 import { NavMenu } from "./components/Navmenu";
 
 import { HiInformationCircle } from "react-icons/hi";
+import { set } from "zod";
 
 interface MatchInterface {
   name: string;
@@ -112,6 +113,7 @@ export default function Home() {
 
         setMatches(filteredMatches);
         setMatchesFetched(true);
+        setLoading(false);
         console.log("Matches:", filteredMatches);
       }
     } catch (error) {

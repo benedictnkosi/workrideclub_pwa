@@ -445,11 +445,6 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
       if (response.data.code !== "R00") {
         setError(response.data.message as string);
       } else {
-        localStorage.setItem("user_guid", response.data.guid);
-        localStorage.setItem(
-          "profile_complete",
-          response.data.profile_complete.toString()
-        );
         setShowSuccess(true);
       }
     } catch (error) {
@@ -461,8 +456,8 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
     }
   };
 
-  const navigateToMatches = () => {
-    router.push("/");
+  const navigateToLogin = () => {
+    router.push("/login");
   };
 
   return (
@@ -495,7 +490,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
               <Button
                 color="light"
                 pill
-                onClick={() => navigateToMatches()}
+                onClick={() => navigateToLogin()}
                 className="login-button"
               >
                 Go to the home page
