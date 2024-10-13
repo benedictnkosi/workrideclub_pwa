@@ -462,7 +462,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({ phoneNumber }) => {
   };
 
   const navigateToMatches = () => {
-    router.push("/matches");
+    router.push("/");
   };
 
   return (
