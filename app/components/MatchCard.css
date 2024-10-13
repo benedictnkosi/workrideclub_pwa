@@ -1,0 +1,63 @@
+.card {
+    width: 100%;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+  }
+  
+  .card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-direction: column;
+  }
+  
+  .icon {
+    width: 40px;
+    height: 40px;
+    color: #585555;
+  }
+  
+  .clock-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    color: #585555;
+  }
+  
+  .text-container {
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .time {
+    display: flex;
+    align-items: center;
+  }
+  
+  .whatsapp-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .whatsapp-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  .whatsapp-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .commuter-name {
+    font-size: 18px;
+    font-weight: bold;
+  }

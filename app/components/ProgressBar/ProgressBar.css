@@ -1,0 +1,33 @@
+.progress-bar {
+  background-color: #fff;
+  padding: 10px;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  line-height: 16px;
+}
+
+.step {
+  font-size: 12px;
+  font-weight: 500;
+  color: #000000;
+  border-bottom: 4px solid #bebebe;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding-bottom: 15px;
+  width: 100%;
+  padding-left: 5px;
+}
+
+.step.active {
+  color: #000000; /* Match the yellow color from the image */
+  font-weight: 700;
+  border-bottom: 4px solid #ffac00;
+}
+
+.step:not(:last-child) {
+  margin-right: 10px;
+}
