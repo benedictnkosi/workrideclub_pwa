@@ -7,8 +7,8 @@ import { Alert, Button, Spinner } from "flowbite-react";
 import axios from "axios";
 import { MatchCard } from "./components/MatchCard";
 import { NavMenu } from "./components/Navmenu";
-import ReactGA from "react-ga";
 import { HiInformationCircle } from "react-icons/hi";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 interface MatchInterface {
   name: string;
@@ -65,9 +65,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [matchesFetched, setMatchesFetched] = useState(false);
-  const TRACKING_ID = "G-YQJZ73S924";
-
-  ReactGA.initialize(TRACKING_ID);
 
   const getMatches = async () => {
     try {
@@ -149,81 +146,86 @@ export default function Home() {
   }
 
   return (
-    <div className="block">
-      <NavMenu />
-      <div className="container" style={{ height: "auto" }}>
-        {matches.length < 2 && (
-          <div className="logo-container">
-            <img
-              src="/images/carpool.png"
-              alt="logo"
-              className="mt-5 logo-image"
-            />
-          </div>
-        )}
-        <div className="container-content">
-          {error && (
-            <Alert
-              className="mt-5 w-full"
-              color="failure"
-              icon={HiInformationCircle}
-            >
-              {error}
-            </Alert>
-          )}
-
-          {loading ? (
-            <Spinner aria-label="Extra large spinner example" size="xl" />
-          ) : (
-            <div className="flex flex-col items-center mt-5">
-              <h2 className="title-24 m-5">Matches</h2>
-              {localStorage.getItem("profile_complete") === "false" ? (
-                <>
-                  <p>Complete your profile to find a lift club</p>
-                  <Button
-                    onClick={handleProfileSetup}
-                    gradientDuoTone="pinkToOrange"
-                  >
-                    Setup Commute Profile
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <div id="matches" className="matches-container">
-                    {matches.length > 0 ? (
-                      <>
-                        {matches.map((match, index) => (
-                          <MatchCard key={index} match={match} />
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        {matchesFetched ? (
-                          <div className="flex flex-col items-center mt-5">
-                            <p className="text-center">
-                              No matches found, we will send you a WhatsApp
-                              message when we find a match for you.
-                            </p>
-                            <Image
-                              src="/images/undraw_void_-3-ggu.svg"
-                              alt="No matches found illustration"
-                              width={300}
-                              height={300}
-                              className="mt-10"
-                            />
-                          </div>
-                        ) : (
-                          <p className="mt-5 text-center">Loading matches...</p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </>
-              )}
+    <>
+      <div className="block">
+        <NavMenu />
+        <div className="container" style={{ height: "auto" }}>
+          {matches.length < 2 && (
+            <div className="logo-container">
+              <img
+                src="/images/carpool.png"
+                alt="logo"
+                className="mt-5 logo-image"
+              />
             </div>
           )}
+          <div className="container-content">
+            {error && (
+              <Alert
+                className="mt-5 w-full"
+                color="failure"
+                icon={HiInformationCircle}
+              >
+                {error}
+              </Alert>
+            )}
+
+            {loading ? (
+              <Spinner aria-label="Extra large spinner example" size="xl" />
+            ) : (
+              <div className="flex flex-col items-center mt-5">
+                <h2 className="title-24 m-5">Matches</h2>
+                {localStorage.getItem("profile_complete") === "false" ? (
+                  <>
+                    <p>Complete your profile to find a lift club</p>
+                    <Button
+                      onClick={handleProfileSetup}
+                      gradientDuoTone="pinkToOrange"
+                    >
+                      Setup Commute Profile
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <div id="matches" className="matches-container">
+                      {matches.length > 0 ? (
+                        <>
+                          {matches.map((match, index) => (
+                            <MatchCard key={index} match={match} />
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {matchesFetched ? (
+                            <div className="flex flex-col items-center mt-5">
+                              <p className="text-center">
+                                No matches found, we will send you a WhatsApp
+                                message when we find a match for you.
+                              </p>
+                              <Image
+                                src="/images/undraw_void_-3-ggu.svg"
+                                alt="No matches found illustration"
+                                width={300}
+                                height={300}
+                                className="mt-10"
+                              />
+                            </div>
+                          ) : (
+                            <p className="mt-5 text-center">
+                              Loading matches...
+                            </p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      <GoogleTagManager gtmId="G-YQJZ73S924" />
+    </>
   );
 }
