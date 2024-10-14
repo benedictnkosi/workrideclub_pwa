@@ -5,6 +5,7 @@ import { Button } from "flowbite-react";
 import "./page.css";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const Splash: React.FC = () => {
   const router = useRouter();
