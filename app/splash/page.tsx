@@ -5,9 +5,13 @@ import { Button } from "flowbite-react";
 import "./page.css";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import ReactGA from "react-ga";
 
 const Splash: React.FC = () => {
   const router = useRouter();
+  const TRACKING_ID = "G-YQJZ73S924";
+
+  ReactGA.initialize(TRACKING_ID);
 
   const navigateToLogin = () => {
     router.push("/login");
