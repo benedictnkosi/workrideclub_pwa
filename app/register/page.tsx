@@ -18,6 +18,7 @@ import {
   GoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -65,8 +66,8 @@ const Register: React.FC = () => {
   const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
 
   useEffect(() => {
-    console.log("error", error);
-  }, [error]);
+    sendGTMEvent({ event: "event", value: "reg-started" });
+  }, []);
 
   return (
     <>
@@ -158,6 +159,7 @@ const CommuteForm: React.FC<CommuterProps> = (props) => {
 
       commuterSchema.parse(commuter);
       setActiveStep(1);
+      sendGTMEvent({ event: "event", value: "reg-commute-form-complete" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         setError(`Validation failed: ${error.errors[0].message}`);
@@ -352,6 +354,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
 
   const sendCode = async () => {
     try {
+      sendGTMEvent({ event: "event", value: "reg-send-code-complete" });
       setError(null);
       const commuterSchema = z.object({
         name: z.string().min(1, "Name cannot be empty"),
@@ -503,6 +506,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
 
   const handleVerifyCode = async () => {
     try {
+      sendGTMEvent({ event: "event", value: "reg-verify-code-complete" });
       setLoading(true);
       setError(null); // Clear any previous errors
       setMessage(null); // Clear any previous messages
