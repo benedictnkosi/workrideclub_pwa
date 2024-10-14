@@ -64,7 +64,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Commuters on this platform are not vetted. Don't send money to
+              Commuters on this platform are not vetted. Do not send money to
               anyone.
             </h3>
             <div className="flex justify-center gap-4">
