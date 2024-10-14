@@ -381,6 +381,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
         setActiveStep(2);
       }
     } catch (error) {
+      setRefreshReCaptcha(!refreshReCaptcha);
       if (error instanceof z.ZodError) {
         setError(`Validation failed: ${error.errors[0].message}`);
       } else {
