@@ -66,8 +66,8 @@ const Profile: React.FC = () => {
           home_address: {
             ...prevState.home_address,
             full_address: commuterData.home_address.full_address,
-            longitude: commuterData.home_address.longitude,
-            latitude: commuterData.home_address.latitude,
+            longitude: Number(commuterData.home_address.longitude),
+            latitude: Number(commuterData.home_address.latitude),
             state: commuterData.home_address.state,
             city: commuterData.home_address.city,
           },
@@ -78,8 +78,8 @@ const Profile: React.FC = () => {
           work_address: {
             ...prevState.work_address,
             full_address: commuterData.work_address.full_address,
-            longitude: commuterData.work_address.longitude,
-            latitude: commuterData.work_address.latitude,
+            longitude: Number(commuterData.work_address.longitude),
+            latitude: Number(commuterData.work_address.latitude),
             state: commuterData.home_address.state,
             city: commuterData.work_address.city,
           },

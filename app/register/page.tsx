@@ -347,7 +347,10 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
       setError(null);
       const commuterSchema = z.object({
         name: z.string().min(1, "Name cannot be empty"),
-        phone: z.string().min(1, "Phone number cannot be empty"),
+        phone: z
+          .string()
+          .min(1, "Phone number cannot be empty")
+          .max(10, "Phone number must be 10 characters"),
       });
 
       commuterSchema.parse(commuter);
