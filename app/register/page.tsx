@@ -366,6 +366,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
       }
 
       setLoading(true);
+      console.log("Token:", token);
       const response = await axios.post<{ code: string; message: string }>(
         `${API_URL}/api/whatsapp/register`,
         commuter
