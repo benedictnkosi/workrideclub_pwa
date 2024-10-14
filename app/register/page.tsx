@@ -17,6 +17,7 @@ import {
   GoogleReCaptchaProvider,
   GoogleReCaptcha,
 } from "react-google-recaptcha-v3";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -56,7 +57,7 @@ const phoneNumberSchema = z
 const codeSchema = z.string().min(1, "Code cannot be empty");
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeStep, setActiveStep] = useState<number>(0);
   const [commuter, setCommuter] = useState(commuterInterface);
@@ -125,6 +126,7 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
+      <GoogleTagManager gtmId="G-YQJZ73S924" />
     </>
   );
 };
@@ -617,4 +619,4 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   );
 };
 
-export default Login;
+export default Register;
