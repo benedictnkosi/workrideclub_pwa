@@ -13,6 +13,10 @@ import ProgressBar from "../components/ProgressBar/ProgressBar";
 import { PlaceAutocomplete } from "../profile/PlaceAutoComplete";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import Image from "next/image";
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -341,22 +345,33 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     setCountdown,
   } = props;
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+  const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
 
-  const handleNext = async () => {
+  const sendCode = async () => {
     try {
       setError(null);
       const commuterSchema = z.object({
         name: z.string().min(1, "Name cannot be empty"),
-        phone: z.string().min(1, "Phone number cannot be empty"),
+        phone: z
+          .string()
+          .min(1, "Phone number cannot be empty")
+          .max(10, "Phone number must be 10 characters"),
       });
 
       commuterSchema.parse(commuter);
+      if (!token) {
+        setError("Please verify you are not a robot");
+        return;
+      }
 
       setLoading(true);
+      console.log("Token:", token);
       const response = await axios.post<{ code: string; message: string }>(
         `${API_URL}/api/whatsapp/register`,
         commuter
       );
+
       setLoading(false);
 
       if (response.data.code !== "R00") {
@@ -367,6 +382,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
         setActiveStep(2);
       }
     } catch (error) {
+      setRefreshReCaptcha(!refreshReCaptcha);
       if (error instanceof z.ZodError) {
         setError(`Validation failed: ${error.errors[0].message}`);
       } else {
@@ -375,6 +391,10 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const setTokenFunc = (getToken: string) => {
+    setToken(getToken);
   };
 
   return (
@@ -415,9 +435,19 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
               }))
             }
           />
+
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY || ""}
+          >
+            <GoogleReCaptcha
+              onVerify={setTokenFunc}
+              refreshReCaptcha={refreshReCaptcha}
+            />
+          </GoogleReCaptchaProvider>
+
           <div className="mb-2 block">
             <Button
-              onClick={handleNext}
+              onClick={sendCode}
               gradientDuoTone="pinkToOrange"
               className="w-full mt-5"
             >

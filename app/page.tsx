@@ -148,67 +148,78 @@ export default function Home() {
   return (
     <div className="block">
       <NavMenu />
-      <div className="container-content">
-        {error && (
-          <Alert
-            className="mt-5 w-full"
-            color="failure"
-            icon={HiInformationCircle}
-          >
-            {error}
-          </Alert>
-        )}
-
-        {loading ? (
-          <Spinner aria-label="Extra large spinner example" size="xl" />
-        ) : (
-          <div className="flex flex-col items-center mt-5">
-            <h2 className="title-24 m-5">Matches</h2>
-            {localStorage.getItem("profile_complete") === "false" ? (
-              <>
-                <p>Complete your profile to find a lift club</p>
-                <Button
-                  onClick={handleProfileSetup}
-                  gradientDuoTone="pinkToOrange"
-                >
-                  Setup Commute Profile
-                </Button>
-              </>
-            ) : (
-              <>
-                <div id="matches" className="matches-container">
-                  {matches.length > 0 ? (
-                    <>
-                      {matches.map((match, index) => (
-                        <MatchCard key={index} match={match} />
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      {matchesFetched ? (
-                        <div className="flex flex-col items-center mt-5">
-                          <p className="text-center">
-                            No matches found, we will send you a WhatsApp
-                            message when we find a match for you.
-                          </p>
-                          <Image
-                            src="/images/undraw_void_-3-ggu.svg"
-                            alt="No matches found illustration"
-                            width={300}
-                            height={300}
-                            className="mt-10"
-                          />
-                        </div>
-                      ) : (
-                        <p className="mt-5 text-center">Loading matches...</p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </>
-            )}
+      <div className="container" style={{ height: "auto" }}>
+        {matches.length < 2 && (
+          <div className="logo-container">
+            <img
+              src="/images/carpool.png"
+              alt="logo"
+              className="mt-5 logo-image"
+            />
           </div>
         )}
+        <div className="container-content">
+          {error && (
+            <Alert
+              className="mt-5 w-full"
+              color="failure"
+              icon={HiInformationCircle}
+            >
+              {error}
+            </Alert>
+          )}
+
+          {loading ? (
+            <Spinner aria-label="Extra large spinner example" size="xl" />
+          ) : (
+            <div className="flex flex-col items-center mt-5">
+              <h2 className="title-24 m-5">Matches</h2>
+              {localStorage.getItem("profile_complete") === "false" ? (
+                <>
+                  <p>Complete your profile to find a lift club</p>
+                  <Button
+                    onClick={handleProfileSetup}
+                    gradientDuoTone="pinkToOrange"
+                  >
+                    Setup Commute Profile
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <div id="matches" className="matches-container">
+                    {matches.length > 0 ? (
+                      <>
+                        {matches.map((match, index) => (
+                          <MatchCard key={index} match={match} />
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        {matchesFetched ? (
+                          <div className="flex flex-col items-center mt-5">
+                            <p className="text-center">
+                              No matches found, we will send you a WhatsApp
+                              message when we find a match for you.
+                            </p>
+                            <Image
+                              src="/images/undraw_void_-3-ggu.svg"
+                              alt="No matches found illustration"
+                              width={300}
+                              height={300}
+                              className="mt-10"
+                            />
+                          </div>
+                        ) : (
+                          <p className="mt-5 text-center">Loading matches...</p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
