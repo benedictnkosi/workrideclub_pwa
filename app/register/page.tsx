@@ -13,7 +13,10 @@ import ProgressBar from "../components/ProgressBar/ProgressBar";
 import { PlaceAutocomplete } from "../profile/PlaceAutoComplete";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import Image from "next/image";
-import ReCAPTCHA from "react-google-recaptcha";
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -342,7 +345,8 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     setCountdown,
   } = props;
   const [loading, setLoading] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [token, setToken] = useState("");
+  const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
 
   const sendCode = async () => {
     try {
@@ -356,10 +360,8 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
       });
 
       commuterSchema.parse(commuter);
-
-      if (!recaptchaToken) {
-        setError("Please complete the reCAPTCHA");
-        setLoading(false);
+      if (!token) {
+        setError("Please verify you are not a robot");
         return;
       }
 
@@ -368,6 +370,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
         `${API_URL}/api/whatsapp/register`,
         commuter
       );
+
       setLoading(false);
 
       if (response.data.code !== "R00") {
@@ -388,8 +391,8 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     }
   };
 
-  const onRecaptchaChange = (token: string | null) => {
-    setRecaptchaToken(token);
+  const setTokenFunc = (getToken: string) => {
+    setToken(getToken);
   };
 
   return (
@@ -431,10 +434,14 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
             }
           />
 
-          <ReCAPTCHA
-            sitekey="6LdQ0WAqAAAAADOyMHmSs-31fw0KJlQKGR7rawEb"
-            onChange={onRecaptchaChange}
-          />
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY || ""}
+          >
+            <GoogleReCaptcha
+              onVerify={setTokenFunc}
+              refreshReCaptcha={refreshReCaptcha}
+            />
+          </GoogleReCaptchaProvider>
 
           <div className="mb-2 block">
             <Button

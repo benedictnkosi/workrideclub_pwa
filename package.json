@@ -15,7 +15,7 @@
     "flowbite-react": "^0.10.2",
     "react": "^18",
     "react-dom": "^18",
-    "react-google-recaptcha": "^3.1.0",
+    "react-google-recaptcha-v3": "^1.10.1",
     "workrideclub_pwa": "file:",
     "zod": "^3.23.8"
   },
@@ -24,7 +24,6 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/react-google-recaptcha": "^2.1.9",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "next": "14.2.15",
