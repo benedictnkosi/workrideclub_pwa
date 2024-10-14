@@ -13,6 +13,7 @@ import ProgressBar from "../components/ProgressBar/ProgressBar";
 import { PlaceAutocomplete } from "../profile/PlaceAutoComplete";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import Image from "next/image";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -341,8 +342,9 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     setCountdown,
   } = props;
   const [loading, setLoading] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
-  const handleNext = async () => {
+  const sendCode = async () => {
     try {
       setError(null);
       const commuterSchema = z.object({
@@ -354,6 +356,12 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
       });
 
       commuterSchema.parse(commuter);
+
+      if (!recaptchaToken) {
+        setError("Please complete the reCAPTCHA");
+        setLoading(false);
+        return;
+      }
 
       setLoading(true);
       const response = await axios.post<{ code: string; message: string }>(
@@ -378,6 +386,10 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
   };
 
   return (
@@ -418,9 +430,15 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
               }))
             }
           />
+
+          <ReCAPTCHA
+            sitekey="6LdQ0WAqAAAAADOyMHmSs-31fw0KJlQKGR7rawEb"
+            onChange={onRecaptchaChange}
+          />
+
           <div className="mb-2 block">
             <Button
-              onClick={handleNext}
+              onClick={sendCode}
               gradientDuoTone="pinkToOrange"
               className="w-full mt-5"
             >
