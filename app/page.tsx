@@ -7,7 +7,7 @@ import { Alert, Button, Spinner } from "flowbite-react";
 import axios from "axios";
 import { MatchCard } from "./components/MatchCard";
 import { NavMenu } from "./components/Navmenu";
-
+import ReactGA from "react-ga";
 import { HiInformationCircle } from "react-icons/hi";
 
 interface MatchInterface {
@@ -65,6 +65,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [matches, setMatches] = useState<MatchInterface[]>([]);
   const [matchesFetched, setMatchesFetched] = useState(false);
+  const TRACKING_ID = "G-YQJZ73S924";
+
+  ReactGA.initialize(TRACKING_ID);
 
   const getMatches = async () => {
     try {
