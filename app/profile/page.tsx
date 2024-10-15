@@ -14,6 +14,7 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { PlaceAutocomplete } from "./PlaceAutoComplete";
 import { FaPencilAlt } from "react-icons/fa";
 import { NavMenu } from "../components/Navmenu";
+import Head from "next/head";
 
 const addressInterface = {
   full_address: "",
@@ -169,6 +170,10 @@ const Profile: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Profile</title>
+        <meta name="description" content="Find a lift club to work or school" />
+      </Head>
       <div className="block">
         <NavMenu />
         <div className="container">

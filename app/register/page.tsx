@@ -19,6 +19,7 @@ import {
 } from "react-google-recaptcha-v3";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { sendGTMEvent } from "@next/third-parties/google";
+import Head from "next/head";
 
 interface CommuterProps {
   commuter: typeof commuterInterface;
@@ -71,6 +72,10 @@ const Register: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Register</title>
+        <meta name="description" content="Find a lift club to work or school" />
+      </Head>
       <div className="container">
         <div className="logo-container ">
           <img

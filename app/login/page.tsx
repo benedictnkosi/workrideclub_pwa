@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { HiInformationCircle } from "react-icons/hi";
 import axios from "axios";
+import Head from "next/head";
 
 const phoneNumberSchema = z
   .string()
@@ -107,6 +108,10 @@ const Login: React.FC = () => {
 
   return (
     <div className="container">
+      <Head>
+        <title>Login</title>
+        <meta name="description" content="Find a lift club to work or school" />
+      </Head>
       {loading ? (
         <Spinner aria-label="Extra large spinner example" size="xl" />
       ) : (

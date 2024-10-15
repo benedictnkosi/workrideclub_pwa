@@ -6,6 +6,7 @@ import "./page.css";
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { GoogleTagManager } from "@next/third-parties/google";
+import Head from "next/head";
 
 const Splash: React.FC = () => {
   const router = useRouter();
@@ -20,6 +21,10 @@ const Splash: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title>Work Ride Club</title>
+        <meta name="description" content="Find a lift club to work or school" />
+      </Head>
       <div className="container">
         <div className="logo-container">
           <img

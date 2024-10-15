@@ -9,6 +9,7 @@ import { MatchCard } from "./components/MatchCard";
 import { NavMenu } from "./components/Navmenu";
 import { HiInformationCircle } from "react-icons/hi";
 import { GoogleTagManager } from "@next/third-parties/google";
+import Head from "next/head";
 
 interface MatchInterface {
   name: string;
@@ -147,6 +148,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Matches | Carpool</title>
+        <meta name="description" content="Find a lift club to work or school" />
+      </Head>
       <div className="block">
         <NavMenu />
         <div className="container" style={{ height: "auto" }}>
