@@ -505,7 +505,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [codeSent, countdown]);
+  }, [codeSent, countdown, setCountdown]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
