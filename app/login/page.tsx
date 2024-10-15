@@ -111,6 +111,14 @@ const Login: React.FC = () => {
       <Head>
         <title>Login</title>
         <meta name="description" content="Find a lift club to work or school" />
+        <meta
+          name="keywords"
+          content="lift club, carpool, work, school, commute, rideshare, login, whatsapp"
+        />
+        <meta
+          name="keywords"
+          content="lift club, carpool, work, school, commute, rideshare, login, whatsapp"
+        />
       </Head>
       {loading ? (
         <Spinner aria-label="Extra large spinner example" size="xl" />

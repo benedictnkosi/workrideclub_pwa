@@ -75,6 +75,10 @@ const Register: React.FC = () => {
       <Head>
         <title>Register</title>
         <meta name="description" content="Find a lift club to work or school" />
+        <meta
+          name="keywords"
+          content="lift club, carpool, work, school, commute, rideshare, login, whatsapp"
+        />
       </Head>
       <div className="container">
         <div className="logo-container ">

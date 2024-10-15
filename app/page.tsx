@@ -151,6 +151,10 @@ export default function Home() {
       <Head>
         <title>Matches | Carpool</title>
         <meta name="description" content="Find a lift club to work or school" />
+        <meta
+          name="keywords"
+          content="lift club, carpool, work, school, commute, rideshare, login, whatsapp"
+        />
       </Head>
       <div className="block">
         <NavMenu />
