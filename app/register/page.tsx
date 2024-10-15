@@ -360,7 +360,7 @@ const PersonalForm: React.FC<CommuterProps> = (props) => {
         name: z.string().min(1, "Name cannot be empty"),
         phone: z
           .string()
-          .min(1, "Phone number cannot be empty")
+          .min(10, "Phone number must be 10 characters")
           .max(10, "Phone number must be 10 characters"),
       });
 
