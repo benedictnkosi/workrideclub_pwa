@@ -170,7 +170,7 @@ const CommuteForm: React.FC<CommuterProps> = (props) => {
   };
 
   return (
-    <APIProvider apiKey="AIzaSyAayXTCszaLYN33xN5cAavY8YCblcznDzE">
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
       <form>
         <div className="mt-5">
           <div className="mb-2 block">
