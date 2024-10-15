@@ -173,7 +173,9 @@ const Profile: React.FC = () => {
         <NavMenu />
         <div className="container">
           <>
-            <APIProvider apiKey="AIzaSyAayXTCszaLYN33xN5cAavY8YCblcznDzE">
+            <APIProvider
+              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
+            >
               {loading ? (
                 <Spinner aria-label="Extra large spinner example" size="xl" />
               ) : (

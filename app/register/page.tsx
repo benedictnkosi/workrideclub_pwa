@@ -172,164 +172,164 @@ const CommuteForm: React.FC<CommuterProps> = (props) => {
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
       <form>
-      <div className="mt-5">
-        <div className="mb-2 block">
-        <Label htmlFor="homeAddress" value="Home Address" />
+        <div className="mt-5">
+          <div className="mb-2 block">
+            <Label htmlFor="homeAddress" value="Home Address" />
+          </div>
+          <PlaceAutocomplete
+            onPlaceSelect={function (
+              place: google.maps.places.PlaceResult | null
+            ): void {
+              if (place && place.geometry) {
+                console.log(place);
+                const location = place.geometry.location;
+                if (location) {
+                  setCommuter((prevState) => ({
+                    ...prevState,
+                    home_address: {
+                      ...prevState.home_address,
+                      full_address: place.formatted_address || "",
+                      longitude: location.lng(),
+                      latitude: location.lat(),
+                      city:
+                        place.address_components?.find((component) =>
+                          component.types.includes("locality")
+                        )?.long_name || "",
+                      state:
+                        place.address_components?.find((component) => {
+                          component.types.includes(
+                            "administrative_area_level_1"
+                          );
+                        })?.long_name || "",
+                    },
+                  }));
+                }
+              }
+            }}
+          />
         </div>
-        <PlaceAutocomplete
-        onPlaceSelect={function (
-          place: google.maps.places.PlaceResult | null
-        ): void {
-          if (place && place.geometry) {
-          console.log(place);
-          const location = place.geometry.location;
-          if (location) {
-            setCommuter((prevState) => ({
-            ...prevState,
-            home_address: {
-              ...prevState.home_address,
-              full_address: place.formatted_address || "",
-              longitude: location.lng(),
-              latitude: location.lat(),
-              city:
-              place.address_components?.find((component) =>
-                component.types.includes("locality")
-              )?.long_name || "",
-              state:
-              place.address_components?.find((component) => {
-                component.types.includes(
-                "administrative_area_level_1"
-                );
-              })?.long_name || "",
-            },
-            }));
-          }
-          }
-        }}
-        />
-      </div>
-      <div className="mt-5">
-        <div className="mb-2 block">
-        <Label htmlFor="workAddress" value="Work Address" />
+        <div className="mt-5">
+          <div className="mb-2 block">
+            <Label htmlFor="workAddress" value="Work Address" />
+          </div>
+
+          <PlaceAutocomplete
+            onPlaceSelect={function (
+              place: google.maps.places.PlaceResult | null
+            ): void {
+              if (place && place.geometry) {
+                console.log(place);
+                const location = place.geometry.location;
+                if (location) {
+                  setCommuter((prevState) => ({
+                    ...prevState,
+                    work_address: {
+                      ...prevState.work_address,
+                      full_address: place.formatted_address || "",
+                      longitude: location.lng(),
+                      latitude: location.lat(),
+                      city:
+                        place.address_components?.find((component) =>
+                          component.types.includes("locality")
+                        )?.long_name || "",
+                      state:
+                        place.address_components?.find((component) => {
+                          component.types.includes(
+                            "administrative_area_level_1"
+                          );
+                        })?.long_name || "",
+                    },
+                  }));
+                }
+              }
+            }}
+          />
+        </div>
+        <div className="mt-5">
+          <div className="mb-2 block">
+            <Label htmlFor="homeDepartureTime" value="Home Departure Time" />
+          </div>
+          <Select
+            id="homeDepartureTime"
+            required
+            value={commuter.home_departure_time}
+            onChange={(e) =>
+              setCommuter((prevState) => ({
+                ...prevState,
+                home_departure_time: e.target.value,
+              }))
+            }
+          >
+            <option>5:00 AM</option>
+            <option>5:30 AM</option>
+            <option>6:00 AM</option>
+            <option>6:30 AM</option>
+            <option>7:00 AM</option>
+            <option>7:30 AM</option>
+            <option>8:00 AM</option>
+            <option>8:30 AM</option>
+            <option>9:00 AM</option>
+            <option>9:30 AM</option>
+            <option>10:00 AM</option>
+          </Select>
+        </div>
+        <div className="mt-5">
+          <div className="mb-2 block">
+            <Label
+              htmlFor="officeDepartureTime"
+              value="Office Departure Time"
+            />
+          </div>
+          <Select
+            id="officeDepartureTime"
+            required
+            value={commuter.work_departure_time}
+            onChange={(e) =>
+              setCommuter((prevState) => ({
+                ...prevState,
+                work_departure_time: e.target.value,
+              }))
+            }
+          >
+            <option>2:00 PM</option>
+            <option>2:30 PM</option>
+            <option>3:00 PM</option>
+            <option>3:30 PM</option>
+            <option>4:00 PM</option>
+            <option>4:30 PM</option>
+            <option>5:00 PM</option>
+            <option>5:30 PM</option>
+            <option>6:00 PM</option>
+            <option>6:30 PM</option>
+            <option>7:00 PM</option>
+          </Select>
+        </div>
+        <div className="mt-5">
+          <div className="mb-2 block">
+            <Label htmlFor="commuterType" value="Commute Type" />
+          </div>
+          <Select
+            id="commuterType"
+            required
+            value={commuter.type}
+            onChange={(e) =>
+              setCommuter((prevState) => ({
+                ...prevState,
+                type: e.target.value,
+              }))
+            }
+          >
+            <option>Select Commute Type</option>
+            <option value="passenger">I am looking for a lift</option>
+            <option value="driver">I am looking for passengers</option>
+          </Select>
         </div>
 
-        <PlaceAutocomplete
-        onPlaceSelect={function (
-          place: google.maps.places.PlaceResult | null
-        ): void {
-          if (place && place.geometry) {
-          console.log(place);
-          const location = place.geometry.location;
-          if (location) {
-            setCommuter((prevState) => ({
-            ...prevState,
-            work_address: {
-              ...prevState.work_address,
-              full_address: place.formatted_address || "",
-              longitude: location.lng(),
-              latitude: location.lat(),
-              city:
-              place.address_components?.find((component) =>
-                component.types.includes("locality")
-              )?.long_name || "",
-              state:
-              place.address_components?.find((component) => {
-                component.types.includes(
-                "administrative_area_level_1"
-                );
-              })?.long_name || "",
-            },
-            }));
-          }
-          }
-        }}
-        />
-      </div>
-      <div className="mt-5">
-        <div className="mb-2 block">
-        <Label htmlFor="homeDepartureTime" value="Home Departure Time" />
-        </div>
-        <Select
-        id="homeDepartureTime"
-        required
-        value={commuter.home_departure_time}
-        onChange={(e) =>
-          setCommuter((prevState) => ({
-          ...prevState,
-          home_departure_time: e.target.value,
-          }))
-        }
-        >
-        <option>5:00 AM</option>
-        <option>5:30 AM</option>
-        <option>6:00 AM</option>
-        <option>6:30 AM</option>
-        <option>7:00 AM</option>
-        <option>7:30 AM</option>
-        <option>8:00 AM</option>
-        <option>8:30 AM</option>
-        <option>9:00 AM</option>
-        <option>9:30 AM</option>
-        <option>10:00 AM</option>
-        </Select>
-      </div>
-      <div className="mt-5">
-        <div className="mb-2 block">
-        <Label
-          htmlFor="officeDepartureTime"
-          value="Office Departure Time"
-        />
-        </div>
-        <Select
-        id="officeDepartureTime"
-        required
-        value={commuter.work_departure_time}
-        onChange={(e) =>
-          setCommuter((prevState) => ({
-          ...prevState,
-          work_departure_time: e.target.value,
-          }))
-        }
-        >
-        <option>2:00 PM</option>
-        <option>2:30 PM</option>
-        <option>3:00 PM</option>
-        <option>3:30 PM</option>
-        <option>4:00 PM</option>
-        <option>4:30 PM</option>
-        <option>5:00 PM</option>
-        <option>5:30 PM</option>
-        <option>6:00 PM</option>
-        <option>6:30 PM</option>
-        <option>7:00 PM</option>
-        </Select>
-      </div>
-      <div className="mt-5">
-        <div className="mb-2 block">
-        <Label htmlFor="commuterType" value="Commute Type" />
-        </div>
-        <Select
-        id="commuterType"
-        required
-        value={commuter.type}
-        onChange={(e) =>
-          setCommuter((prevState) => ({
-          ...prevState,
-          type: e.target.value,
-          }))
-        }
-        >
-        <option>Select Commute Type</option>
-        <option value="passenger">I am looking for a lift</option>
-        <option value="driver">I am looking for passengers</option>
-        </Select>
-      </div>
-
-      <div className="mt-5">
-        <Button
-        onClick={handleNext}
-        className="w-full mt-5"
-        gradientDuoTone=
+        <div className="mt-5">
+          <Button
+            onClick={handleNext}
+            className="w-full mt-5"
+            gradientDuoTone="pinkToOrange"
           >
             Next
           </Button>
