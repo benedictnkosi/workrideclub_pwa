@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "flowbite-react";
 import "./page.css";
 import { FaWhatsapp } from "react-icons/fa";
@@ -10,6 +10,13 @@ import Head from "next/head";
 
 const Splash: React.FC = () => {
   const router = useRouter();
+  const [host, setHost] = React.useState("");
+
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    console.log("Current URL:", currentUrl);
+    setHost(window.location.host);
+  }, []);
 
   const navigateToLogin = () => {
     router.push("/login");
@@ -55,6 +62,7 @@ const Splash: React.FC = () => {
             <p>
               Work Ride Club is a platform that connects drivers and passengers
             </p>
+            <p>Welcome {host}</p>
             <Button
               color="light"
               pill
